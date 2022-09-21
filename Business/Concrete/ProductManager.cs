@@ -1,5 +1,6 @@
 using AutoMapper;
 using Business.Abstract;
+using Business.Rules.ProductRules;
 using Core.Paging;
 using Core.Utilities.Results.Abstract;
 using Domain.DTOs.Product;
@@ -13,11 +14,13 @@ public class ProductManager:IProductService
 {
     private readonly IProductRepository _repository;
     private readonly IMapper _mapper;
+    private readonly ProductBusinessRules _productBusinessRules;
 
-    public ProductManager(IProductRepository repository, IMapper mapper)
+    public ProductManager(IProductRepository repository, IMapper mapper, ProductBusinessRules productBusinessRules)
     {
         _repository = repository;
         _mapper = mapper;
+        _productBusinessRules = productBusinessRules;
     }
     public async Task<PageableListProductModel> GetAllPaginatedAsync(PageRequest pageRequest)
     {
@@ -34,8 +37,12 @@ public class ProductManager:IProductService
         return response;
     }
 
-    public Task<ProductUpdateResponseDto> UpdateAsync(ProductUpdateRequestDto productUpdateRequestDto)
+    public async Task<ProductUpdateResponseDto> UpdateAsync(ProductUpdateRequestDto productUpdateRequestDto)
     {
-        throw new NotImplementedException();
+        await _productBusinessRules.AssureThatEntityExistsById(productUpdateRequestDto.Id);
+        var entity = _mapper.Map<Product>(productUpdateRequestDto);
+        var updatedEntity =await _repository.UpdateAsync(entity);
+        var result = _mapper.Map<ProductUpdateResponseDto>(updatedEntity);
+        return result;
     }
 }

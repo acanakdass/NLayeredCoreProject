@@ -2,8 +2,11 @@ using System.Data;
 using System.Reflection;
 using Business.Abstract;
 using Business.Concrete;
+using Business.Rules.ProductRules;
+using Business.Validators.ProductValidators;
 using Core.Business;
 using Core.Utilities.Ioc;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +35,9 @@ public class DIModule : ICoreModule
 
         serviceCollection.AddScoped<IProductService, ProductManager>();
         serviceCollection.AddScoped<IProductRepository, ProductRepository>();
+        serviceCollection.AddScoped<ProductBusinessRules>();
+        serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        serviceCollection.AddValidatorsFromAssemblyContaining<ProductCreateValidator>();
 
         // serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
     }

@@ -20,7 +20,9 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
 
     public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        return await Context.Set<TEntity>().FirstOrDefaultAsync(predicate);
+        var result = await Context.Set<TEntity>().FirstOrDefaultAsync(predicate);
+        Context.ChangeTracker.Clear();
+        return result;
     }
 
     public async Task<IPaginate<TEntity>> GetListAsync(
@@ -67,7 +69,7 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
 
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
-        Context.Entry(entity).State = EntityState.Modified;
+        Context.Entry<TEntity>(entity).State = EntityState.Modified;
         await Context.SaveChangesAsync();
         return entity;
     }
