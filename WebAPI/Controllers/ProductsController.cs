@@ -2,7 +2,9 @@ using AutoMapper;
 using Business.Abstract;
 using Business.Validators.ProductValidators;
 using Core.Aspects.Validation;
+using Core.Entities.DTOs;
 using Core.Paging;
+using Core.Utilities.Dynamic;
 using Domain.DTOs.Product;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +12,11 @@ namespace WebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductsController:ControllerBase
+public class ProductsController : ControllerBase
 {
     private readonly IProductService _service;
     private readonly IMapper _mapper;
+
     public ProductsController(IProductService service, IMapper mapper)
     {
         _service = service;
@@ -27,15 +30,27 @@ public class ProductsController:ControllerBase
         return Ok(result);
     }
 
-    [ValidatorAspect(typeof(ProductCreateValidator))]
+    [HttpPost("getlistdynamic")]
+    public async Task<IActionResult> GetAllDynamic([FromQuery] PageRequest pageRequest, [FromBody] Dynamic dynamic)
+    {
+        var resuestDto = new DynamicPageableListRequestDto()
+        {
+            PageRequest = pageRequest,
+            Dynamic = dynamic
+        };
+        var result = await _service.GetDynamicListAsync(resuestDto);
+        return Ok(result);
+    }
+
+    [ValidationAspect(typeof(ProductCreateValidator))]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] ProductCreateRequestDto productCreateRequestDto)
     {
         var result = await _service.CreateAsync(productCreateRequestDto);
         return Ok(result);
     }
-    
-    [ValidatorAspect(typeof(ProductUpdateValidator))]
+
+    [ValidationAspect(typeof(ProductUpdateValidator))]
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] ProductUpdateRequestDto productUpdateRequestDto)
     {

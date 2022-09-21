@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Core.Middlewares;
+using Microsoft.AspNetCore.Builder;
 
-namespace Core.Middlewares;
+namespace Core.Extensions;
 
 public static class ExceptionMiddlewareExtensions
 {

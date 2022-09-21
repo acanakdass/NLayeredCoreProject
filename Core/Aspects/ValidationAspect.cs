@@ -1,6 +1,8 @@
-
+using AutoMapper;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Entities.Concrete;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Core.Aspects.Validation;
@@ -17,16 +19,15 @@ public class ValidationAspect : ActionFilterAttribute
         }
         _validatorType = validatorType;
     }
-    
+
     public override void OnActionExecuting(ActionExecutingContext context)
     {
         var validator = (IValidator) Activator.CreateInstance(_validatorType);
-        var entityType = _validatorType.BaseType.GetGenericArguments()[0];
-        var entities = context.ActionArguments.Where(t => t.GetType() == entityType).ToList();
-        var entType = context.ActionArguments.FirstOrDefault().GetType();
-        foreach (var entity in entities)
+        var objType = _validatorType.BaseType.GetGenericArguments()[0];
+        var objs = context.ActionArguments.Where(x => x.Value.GetType() == objType).Select(y => y.Value).ToList();
+        foreach (var obj in objs)
         {
-            ValidationTool.Validate(validator, entity);
+            ValidationTool.Validate(validator, obj);
         }
     }
 }

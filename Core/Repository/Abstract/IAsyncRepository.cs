@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Core.Entities.Concrete;
 using Core.Paging.Abstract;
+using Core.Utilities.Dynamic;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace Core.Repository.Abstract;
@@ -14,11 +15,11 @@ public interface IAsyncRepository<T> : IQuery<T> where T : Entity
                                     Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
                                     int index = 0, int size = 10, bool enableTracking = true,
                                     CancellationToken cancellationToken = default);
-    //
-    // Task<IPaginate<T>> GetListByDynamicAsync(Dynamic.Dynamic dynamic,
-    //                                          Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
-    //                                          int index = 0, int size = 10, bool enableTracking = true,
-    //                                          CancellationToken cancellationToken = default);
+    
+    Task<IPaginate<T>> GetListByDynamicAsync(Dynamic dynamic,
+                                             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
+                                             int index = 0, int size = 10, bool enableTracking = true,
+                                             CancellationToken cancellationToken = default);
 
     Task<T> AddAsync(T entity);
     Task<T> UpdateAsync(T entity);

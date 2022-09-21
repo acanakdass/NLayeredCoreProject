@@ -15,12 +15,10 @@
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.17.0" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
+        <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.20" />
     </ItemGroup>
     <ItemGroup>
       <Content Include="CrossCuttingConcerns\.DS_Store" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Entities\DTOs" />
     </ItemGroup>
 
 </Project>

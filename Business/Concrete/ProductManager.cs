@@ -1,6 +1,7 @@
 using AutoMapper;
 using Business.Abstract;
 using Business.Rules.ProductRules;
+using Core.Entities.DTOs;
 using Core.Paging;
 using Core.Utilities.Results.Abstract;
 using Domain.DTOs.Product;
@@ -10,7 +11,7 @@ using Repository.Abstract;
 
 namespace Business.Concrete;
 
-public class ProductManager:IProductService
+public class ProductManager : IProductService
 {
     private readonly IProductRepository _repository;
     private readonly IMapper _mapper;
@@ -22,9 +23,21 @@ public class ProductManager:IProductService
         _mapper = mapper;
         _productBusinessRules = productBusinessRules;
     }
+
     public async Task<PageableListProductModel> GetAllPaginatedAsync(PageRequest pageRequest)
     {
-        var result = await _repository.GetListAsync(index:pageRequest.Page, size:pageRequest.PageSize);
+        var result = await _repository.GetListAsync(index: pageRequest.Page, size: pageRequest.PageSize);
+        var response = _mapper.Map<PageableListProductModel>(result);
+        return response;
+    }
+
+    public async Task<PageableListProductModel> GetDynamicListAsync(
+        DynamicPageableListRequestDto dynamicPageableListRequestDto)
+    {
+        var result = await _repository.GetListByDynamicAsync(
+            dynamicPageableListRequestDto.Dynamic,
+            size: dynamicPageableListRequestDto.PageRequest.PageSize,
+            index: dynamicPageableListRequestDto.PageRequest.Page);
         var response = _mapper.Map<PageableListProductModel>(result);
         return response;
     }
@@ -41,7 +54,7 @@ public class ProductManager:IProductService
     {
         await _productBusinessRules.AssureThatEntityExistsById(productUpdateRequestDto.Id);
         var entity = _mapper.Map<Product>(productUpdateRequestDto);
-        var updatedEntity =await _repository.UpdateAsync(entity);
+        var updatedEntity = await _repository.UpdateAsync(entity);
         var result = _mapper.Map<ProductUpdateResponseDto>(updatedEntity);
         return result;
     }

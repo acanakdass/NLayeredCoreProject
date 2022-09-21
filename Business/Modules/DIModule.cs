@@ -4,7 +4,6 @@ using Business.Abstract;
 using Business.Concrete;
 using Business.Rules.ProductRules;
 using Business.Validators.ProductValidators;
-using Core.Business;
 using Core.Utilities.Ioc;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
