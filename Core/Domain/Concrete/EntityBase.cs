@@ -1,4 +1,4 @@
-namespace Core.Entities.Concrete;
+namespace Core.Domain.Concrete;
 
 public class EntityBase
 {

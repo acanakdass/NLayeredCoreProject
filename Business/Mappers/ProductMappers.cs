@@ -1,8 +1,8 @@
 using AutoMapper;
+using Core.Domain.Models;
 using Core.Paging.Abstract;
 using Domain.DTOs.Product;
 using Domain.Entities;
-using Domain.Models.Product;
 
 namespace Business.Mappers;
 
@@ -12,7 +12,7 @@ public class ProductMappers:Profile
     {
         
         CreateMap<Product, ProductDto>().ReverseMap();
-        CreateMap<IPaginate<Product>, PageableListProductModel>().ReverseMap();
+        CreateMap<IPaginate<Product>, PageableListModel<Product>>().ReverseMap();
         CreateMap<ProductCreateRequestDto, Product>().ReverseMap();
         CreateMap<ProductCreateResponseDto, Product>().ReverseMap();
         CreateMap<ProductUpdateRequestDto, Product>().ReverseMap();

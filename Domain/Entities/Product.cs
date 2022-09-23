@@ -1,5 +1,4 @@
-using Core.Entities.Abstract;
-using Core.Entities.Concrete;
+using Core.Domain.Concrete;
 
 namespace Domain.Entities;
 

@@ -1,45 +1,24 @@
 using AutoMapper;
 using Business.Abstract;
 using Business.Rules.ProductRules;
-using Core.Entities.DTOs;
-using Core.Paging;
-using Core.Utilities.Results.Abstract;
+using Core.Business.Concrete;
 using Domain.DTOs.Product;
 using Domain.Entities;
-using Domain.Models.Product;
 using Repository.Abstract;
 
 namespace Business.Concrete;
 
-public class ProductManager : IProductService
+public class ProductManager : BaseReadManager<Product>,IProductService
 {
     private readonly IProductRepository _repository;
     private readonly IMapper _mapper;
     private readonly ProductBusinessRules _productBusinessRules;
 
-    public ProductManager(IProductRepository repository, IMapper mapper, ProductBusinessRules productBusinessRules)
+    public ProductManager(IProductRepository repository, IMapper mapper, ProductBusinessRules productBusinessRules) : base(repository,mapper)
     {
         _repository = repository;
         _mapper = mapper;
         _productBusinessRules = productBusinessRules;
-    }
-
-    public async Task<PageableListProductModel> GetAllPaginatedAsync(PageRequest pageRequest)
-    {
-        var result = await _repository.GetListAsync(index: pageRequest.Page, size: pageRequest.PageSize);
-        var response = _mapper.Map<PageableListProductModel>(result);
-        return response;
-    }
-
-    public async Task<PageableListProductModel> GetDynamicListAsync(
-        DynamicPageableListRequestDto dynamicPageableListRequestDto)
-    {
-        var result = await _repository.GetListByDynamicAsync(
-            dynamicPageableListRequestDto.Dynamic,
-            size: dynamicPageableListRequestDto.PageRequest.PageSize,
-            index: dynamicPageableListRequestDto.PageRequest.Page);
-        var response = _mapper.Map<PageableListProductModel>(result);
-        return response;
     }
 
     public async Task<ProductCreateResponseDto> CreateAsync(ProductCreateRequestDto productCreateRequestDto)

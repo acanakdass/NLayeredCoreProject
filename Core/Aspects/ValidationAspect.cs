@@ -1,6 +1,5 @@
 using AutoMapper;
 using Core.CrossCuttingConcerns.Validation;
-using Core.Entities.Concrete;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

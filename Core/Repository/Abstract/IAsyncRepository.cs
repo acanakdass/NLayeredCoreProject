@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Core.Entities.Concrete;
+using Core.Domain.Concrete;
 using Core.Paging.Abstract;
 using Core.Utilities.Dynamic;
 using Microsoft.EntityFrameworkCore.Query;

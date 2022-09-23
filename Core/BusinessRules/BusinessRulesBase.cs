@@ -1,6 +1,5 @@
 using Core.CrossCuttingConcerns.Exceptions;
-using Core.Entities.Abstract;
-using Core.Entities.Concrete;
+using Core.Domain.Concrete;
 using Core.Repository.Abstract;
 
 namespace Core.BusinessRules;

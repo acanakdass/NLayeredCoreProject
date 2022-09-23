@@ -1,15 +1,11 @@
-using Core.Entities.DTOs;
-using Core.Paging;
+using Core.Business.Abstract;
 using Domain.DTOs.Product;
 using Domain.Entities;
-using Domain.Models.Product;
 
 namespace Business.Abstract;
 
-public interface IProductService
+public interface IProductService:IBaseReadService<Product>
 {
-    Task<PageableListProductModel> GetAllPaginatedAsync(PageRequest pageRequest);
-    Task<PageableListProductModel> GetDynamicListAsync(DynamicPageableListRequestDto dynamicPageableListRequestDto);
     Task<ProductCreateResponseDto> CreateAsync(ProductCreateRequestDto productCreateRequestDto);
     Task<ProductUpdateResponseDto> UpdateAsync(ProductUpdateRequestDto productUpdateRequestDto);
 }
