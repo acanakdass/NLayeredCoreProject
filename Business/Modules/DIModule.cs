@@ -43,12 +43,13 @@ public class DIModule : ICoreModule
         serviceCollection.AddScoped<ProductBusinessRules>();
         serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         serviceCollection.AddValidatorsFromAssemblyContaining<ProductCreateValidator>();
+        
         serviceCollection.Configure<RedisSettings>(_configuration.GetSection("RedisSettings"));
 
         serviceCollection.AddSingleton<RedisServer>(sp =>
         {
             var redisSettings = sp.GetRequiredService<IOptions<RedisSettings>>().Value;
-            var redis = new RedisServer(redisSettings.Host, redisSettings.Port);
+            var redis = new RedisServer(redisSettings);
             redis.Connect();
             return redis;
         });
